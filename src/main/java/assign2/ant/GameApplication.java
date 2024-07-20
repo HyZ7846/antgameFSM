@@ -1,5 +1,9 @@
 package assign2.ant;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,12 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javafx.stage.Stage;
 
 public class GameApplication extends Application {
     public static final double CANVAS_WIDTH = 800;
@@ -199,7 +199,7 @@ public class GameApplication extends Application {
     }
 
     public void kill(Ant ant) {
-        ants.add(new Ant(ant.x, ant.y, this)); // add ant to a temp list to avoid concurrent modification
+        ants.remove(ant); // remove the ant from the list
     }
 
     private void update(GraphicsContext gc, double elapsedSeconds) {
@@ -223,22 +223,14 @@ public class GameApplication extends Application {
             gc.fillRect(element[0], element[1], element[2], element[3]);
         });
 
-        List<Ant> newAnts = new ArrayList<>(ants); // create a copy of the ants list for safe iteration
+        // Use an iterator to safely remove ants during iteration
+        ants.removeIf(ant -> ant.updateAndCheckKill(elapsedSeconds, existingElements, ants, homeLocation, this));
 
-        // Update and draw ants
-        for (Ant ant : newAnts) {
-            ant.updateTime(elapsedSeconds);
-            if (ant.shouldBeKilled()) {
-                ants.remove(ant);
-                continue;
-            }
-            ant.move(existingElements, ants, homeLocation);
+        // Draw ants
+        for (Ant ant : ants) {
             gc.setFill(ant.getColor());
             gc.fillOval(ant.x, ant.y, ANT_SIZE, ANT_SIZE);
         }
-
-        ants.clear();
-        ants.addAll(newAnts); // update the ants list with the changes
     }
 
     public static void main(String[] args) {

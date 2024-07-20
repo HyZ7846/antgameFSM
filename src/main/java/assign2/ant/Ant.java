@@ -1,7 +1,8 @@
 package assign2.ant;
 
-import javafx.scene.paint.Color;
 import java.util.List;
+
+import javafx.scene.paint.Color;
 
 public class Ant {
     double x, y, dx, dy;
@@ -34,6 +35,15 @@ public class Ant {
 
     boolean shouldBeKilled() {
         return timeInside > 3;
+    }
+
+    boolean updateAndCheckKill(double elapsedSeconds, List<double[]> elements, List<Ant> ants, double[] homeLocation, GameApplication app) {
+        updateTime(elapsedSeconds);
+        if (shouldBeKilled()) {
+            return true;
+        }
+        move(elements, ants, homeLocation);
+        return false;
     }
 
     void move(List<double[]> elements, List<Ant> ants, double[] homeLocation) {
