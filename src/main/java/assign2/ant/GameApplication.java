@@ -199,7 +199,7 @@ public class GameApplication extends Application {
     }
 
     public void kill(Ant ant) {
-        ants.remove(ant);
+        ants.add(new Ant(ant.x, ant.y, this)); // add ant to a temp list to avoid concurrent modification
     }
 
     private void update(GraphicsContext gc, double elapsedSeconds) {
@@ -223,19 +223,22 @@ public class GameApplication extends Application {
             gc.fillRect(element[0], element[1], element[2], element[3]);
         });
 
+        List<Ant> newAnts = new ArrayList<>(ants); // create a copy of the ants list for safe iteration
+
         // Update and draw ants
-        List<Ant> antsToRemove = new ArrayList<>();
-        for (Ant ant : ants) {
+        for (Ant ant : newAnts) {
             ant.updateTime(elapsedSeconds);
             if (ant.shouldBeKilled()) {
-                antsToRemove.add(ant);
+                ants.remove(ant);
                 continue;
             }
             ant.move(existingElements, ants, homeLocation);
             gc.setFill(ant.getColor());
             gc.fillOval(ant.x, ant.y, ANT_SIZE, ANT_SIZE);
         }
-        ants.removeAll(antsToRemove);
+
+        ants.clear();
+        ants.addAll(newAnts); // update the ants list with the changes
     }
 
     public static void main(String[] args) {
