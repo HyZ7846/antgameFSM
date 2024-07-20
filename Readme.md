@@ -58,7 +58,7 @@ The Ant Game is a simulation where ants roam around a canvas, interact with diff
 3. **Run**:
     - Run the game using the following command:
       ```bash
-      java --module-path ./libs/javafx-sdk-22.0.1/lib --add-modules javafx.controls,javafx.fxml assign2.ant.HelloApplication
+      java --module-path ./libs/javafx-sdk-22.0.1/lib --add-modules javafx.controls,javafx.fxml assign2.ant.GameApplication
       ```
 
 ## 3. State Machine Description
