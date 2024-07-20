@@ -14,11 +14,10 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class HelloApplication extends Application {
+public class GameApplication extends Application {
     public static final double CANVAS_WIDTH = 800;
     public static final double CANVAS_HEIGHT = 600;
     public static final double ANT_SIZE = 10;
