@@ -7,11 +7,11 @@ public class Ant {
     double x, y, dx, dy;
     MovementStyle movementStyle;
     Status status;
-    HelloApplication app;
+    GameApplication app;
     double timeInside;
     boolean insideSomething;
 
-    Ant(double x, double y, HelloApplication app) {
+    Ant(double x, double y, GameApplication app) {
         this.x = x;
         this.y = y;
         this.dx = Math.random() * 2 - 1;
@@ -52,18 +52,18 @@ public class Ant {
         y += dy;
 
         // Change direction if the ant hits the canvas borders
-        if (x < 0 || x > HelloApplication.CANVAS_WIDTH - HelloApplication.ANT_SIZE) {
-            x = Math.max(0, Math.min(x, HelloApplication.CANVAS_WIDTH - HelloApplication.ANT_SIZE));
+        if (x < 0 || x > GameApplication.CANVAS_WIDTH - GameApplication.ANT_SIZE) {
+            x = Math.max(0, Math.min(x, GameApplication.CANVAS_WIDTH - GameApplication.ANT_SIZE));
             changeDirection();
         }
 
-        if (y < 0 || y > HelloApplication.CANVAS_HEIGHT - HelloApplication.ANT_SIZE) {
-            y = Math.max(0, Math.min(y, HelloApplication.CANVAS_HEIGHT - HelloApplication.ANT_SIZE));
+        if (y < 0 || y > GameApplication.CANVAS_HEIGHT - GameApplication.ANT_SIZE) {
+            y = Math.max(0, Math.min(y, GameApplication.CANVAS_HEIGHT - GameApplication.ANT_SIZE));
             changeDirection();
         }
 
         for (double[] element : elements) {
-            if (isOverlapping(x, y, HelloApplication.ANT_SIZE, HelloApplication.ANT_SIZE, element)) {
+            if (isOverlapping(x, y, GameApplication.ANT_SIZE, GameApplication.ANT_SIZE, element)) {
                 int type = (int) element[4];
                 if (type == 1 && status == Status.HUNGRY) { // Contact with food
                     movementStyle = MovementStyle.RETURNING;
@@ -81,7 +81,7 @@ public class Ant {
         }
 
         for (Ant ant : ants) {
-            if (ant != this && isOverlapping(x, y, HelloApplication.ANT_SIZE, HelloApplication.ANT_SIZE, new double[]{ant.x, ant.y, HelloApplication.ANT_SIZE, HelloApplication.ANT_SIZE})) {
+            if (ant != this && isOverlapping(x, y, GameApplication.ANT_SIZE, GameApplication.ANT_SIZE, new double[]{ant.x, ant.y, GameApplication.ANT_SIZE, GameApplication.ANT_SIZE})) {
                 changeDirection();
                 break;
             }
@@ -89,8 +89,8 @@ public class Ant {
     }
 
     private void returnHome(List<double[]> elements, double[] homeLocation) {
-        double targetX = homeLocation[0] + homeLocation[2] / 2 - HelloApplication.ANT_SIZE / 2;
-        double targetY = homeLocation[1] + homeLocation[3] / 2 - HelloApplication.ANT_SIZE / 2;
+        double targetX = homeLocation[0] + homeLocation[2] / 2 - GameApplication.ANT_SIZE / 2;
+        double targetY = homeLocation[1] + homeLocation[3] / 2 - GameApplication.ANT_SIZE / 2;
         double deltaX = targetX - x;
         double deltaY = targetY - y;
         double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -102,18 +102,18 @@ public class Ant {
         y += dy;
 
         // Change direction if the ant hits the canvas borders
-        if (x < 0 || x > HelloApplication.CANVAS_WIDTH - HelloApplication.ANT_SIZE) {
-            x = Math.max(0, Math.min(x, HelloApplication.CANVAS_WIDTH - HelloApplication.ANT_SIZE));
+        if (x < 0 || x > GameApplication.CANVAS_WIDTH - GameApplication.ANT_SIZE) {
+            x = Math.max(0, Math.min(x, GameApplication.CANVAS_WIDTH - GameApplication.ANT_SIZE));
             changeDirection();
         }
 
-        if (y < 0 || y > HelloApplication.CANVAS_HEIGHT - HelloApplication.ANT_SIZE) {
-            y = Math.max(0, Math.min(y, HelloApplication.CANVAS_HEIGHT - HelloApplication.ANT_SIZE));
+        if (y < 0 || y > GameApplication.CANVAS_HEIGHT - GameApplication.ANT_SIZE) {
+            y = Math.max(0, Math.min(y, GameApplication.CANVAS_HEIGHT - GameApplication.ANT_SIZE));
             changeDirection();
         }
 
         for (double[] element : elements) {
-            if (isOverlapping(x, y, HelloApplication.ANT_SIZE, HelloApplication.ANT_SIZE, element)) {
+            if (isOverlapping(x, y, GameApplication.ANT_SIZE, GameApplication.ANT_SIZE, element)) {
                 if ((int) element[4] == 3) { // Contact with poison
                     app.kill(this);
                     return;
@@ -124,7 +124,7 @@ public class Ant {
             }
         }
 
-        if (isOverlapping(x, y, HelloApplication.ANT_SIZE, HelloApplication.ANT_SIZE, homeLocation)) {
+        if (isOverlapping(x, y, GameApplication.ANT_SIZE, GameApplication.ANT_SIZE, homeLocation)) {
             if (status == Status.HUNGRY) {
                 status = Status.THIRSTY;
             } else if (status == Status.THIRSTY) {
